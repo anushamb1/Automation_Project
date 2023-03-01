@@ -8,6 +8,13 @@ cd /tmp; rm -rf *.tar; tar -zcvf $tarfile.tar *.log
 aws s3 \
 cp /tmp/${tarfile}.tar \
 s3://${s3_bucket}/${tarfile}.tar
+#cron job 
+cronfile="automation"
+if [ ! -f "$cronfile" ]
+then
+        echo "0 0 * * * root /root/Automation_Project/automation.sh" >> $cronfile
+fi
+#script for Task3
 cd /tmp
 timestamp=$(find . -name '*.tar' -printf "%TY%Tm%Td-%TH%TM%TS" | grep -o '^[^\.]*')
 filesize=$((($(stat -c %s *.tar ) + 1023) / 1024 ))K
